@@ -2,7 +2,11 @@
 from vec import Vec
 from mat import Mat
 from mat import matrix_matrix_mul,matrix_vector_mul, transpose
-
+import GF2
+from GF2 import one
+from triangular import triangular_solve
+#import bitutil
+#from bitutil import bits2mat, bits2str, mat2bits, str2bits, noise
 def efficient_rowdict2mat(rowdict):
     col_labels = value(rowdict).D
     M = Mat((set(keys(rowdict)), col_labels), {})
@@ -130,3 +134,32 @@ def find_error(v):
 
 
 
+#if __name__ == '__main__':
+  #print(one)
+  
+L = [[one,0, one,one],[one, one, 0,one],[0,0,0,one],[one, one,one,0],[0,0,one,0],[0,one,0,0],[one,0,0,0]]
+p = listlist2mat([[one,0,0,one]]).transpose()
+G = listlist2mat(L)
+
+# H = identity({1,2,3},1)
+# print (H)
+# b = Vec({1,2,3},{1:1,2:2,3:3})
+# print(triangular_solve(H,[1,2,3],b))
+#print G
+# s = "I'm trying to free your mind, Neo. But I can only show you the door. You're the one that has to walk through it"
+# #print s
+# # L = bits2mat(str2bits(s))
+# # print one*one
+# #print len(str2bits(s))
+# p = bits2mat(str2bits(s))
+# p = noise(p,0.2)
+# #print p
+# G_p = matrix_matrix_mul(G,p)
+# Rl = [[0,0,0,0,0,0,one],[0,0,0,0,0,one,0],[0,0,0,0,one,0,0],[0,0,one,0,0,0,0]]
+# R = listlist2mat(Rl)
+# result = matrix_matrix_mul(R,G_p)
+#print bits2str(mat2bits(result))
+# error_syndrome = Vec({1, 2, 3}, {1: 0, 2: 1,3:1})
+# print find_error(error_syndrome)
+# L_v = {'a':Vec({'a','b'},{'a':0,'b':0})}
+# print coldict2mat(L_v)

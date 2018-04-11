@@ -134,6 +134,7 @@ def add(u,v):
     >>> b + Vec({'a','e','i','o','u'}, {}) == b
     True
     """
+    
     assert u.D == v.D
     u_new = dict([[k, u.f[k]] for k in u.f.keys() if u.f[k] != 0])
     v_new = dict([[k, v.f[k]] for k in v.f.keys() if v.f[k]!= 0])
@@ -184,9 +185,13 @@ def dot(u,v):
         for i in values_not_present_in_both:
             u.f[i] = 0
             v.f[i] = 0
-
-    dot_pairs = [[u.f[i],v.f[j]] for i in u.D for j in v.D if i==j]
-    print dot_pairs
+    vals_u = list(u.f.keys())
+    vals_v = list(v.f.keys())
+    try:
+        dot_pairs = [[u.f[i],v.f[j]] for i in vals_u for j in vals_v if (i==j)]
+    except:
+        pass
+    
     return sum([x*y for [x,y] in dot_pairs])
 
 
@@ -208,8 +213,13 @@ def scalar_mul(v, alpha):
     >>> u == Vec({'x','y','z','w'},{'x':1,'y':2,'z':3,'w':4})
     True
     """
-    new_f = dict([(x,alpha*y) for (x,y) in v.f.items()])
-
+    #print(v,alpha)
+    if len(v.f)<len(v.D):
+        for i in v.D - set(v.f.keys()):
+            v.f[i] = 0
+    new_f = dict([(x,alpha*y) for (x,y) in list(v.f.items())])
+    
+    #print(Vec(set(new_f.keys()), new_f))
     return Vec(set(new_f.keys()), new_f)
 
 def neg(v):
@@ -272,8 +282,9 @@ class Vec:
             return self
 
     def __sub__(a,b):
+        #print(a,b)
         "Returns a vector which is the difference of a and b."
-        return a+(-b)
+        return a+(neg(b))
 
     __eq__ = equal
 
@@ -318,13 +329,13 @@ class Vec:
 
 if __name__ == '__main__':
     v = Vec({1,2,3},{2:3,3:4})
-    print(v)
+    #print(v)
     #print v.D
     #print v.f
     #print getitem(v,2)
     #print setitem(v,1,10)
     #print -v
-    print scalar_mul(v, 1)
+    #print scalar_mul(v, 1)
     #print v*v
     # b = Vec({'a','e','i','o','u'}, {'o':4,'u':7})
     # d = Vec({'x','y','z'}, {'x':2,'y':1})

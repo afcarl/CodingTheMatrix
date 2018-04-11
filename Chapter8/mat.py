@@ -1,6 +1,8 @@
 # Copyright 2013 Philip N. Klein
 from vec import Vec
 from collections import defaultdict
+import GF2
+from GF2 import One
 
 #Test your Mat class over R and also over GF(2).  The following tests use only R.
 #from solver import solve
@@ -140,7 +142,6 @@ def transpose(M):
     keys = map(lambda x: (x[1],x[0]),k)
     M.f = dict(zip(keys,v))
     M.D = (M.D[1],M.D[0])
-    
     return M
 
 def vector_matrix_mul(v, M):
@@ -341,54 +342,49 @@ class Mat:
         raise TypeError('%r object is not iterable' % self.__class__.__name__)
 
 
+if __name__ == '__main__':
+    #M = Mat(({'a'},{'a'}), {('a','a'):1})
+    #print(M)
+    #print(setitem(M,('a','a'),10))
+    M = Mat(({0,1}, {0,1}), {(0,0):0,(0,1):3, (1,0):2, (1,1):4})
+    #m_i = M.f.items()
+    #M_f = filter(lambda x:x[0][0]==0, m_i)
+    #print M_f
+    #print M
+    #print(M.transpose())
+    #print(Mat(({0,1}, {0,1}), {(0,1):2, (1,0):3, (1,1):4}))
+    #print((M.transpose()) == Mat(({0,1}, {0,1}), {(0,1):2, (1,0):3, (1,1):4}))
+    #print(transpose(M))
+    # M = Mat(({'x','y','z'}, {2,4}), {('x',4):3, ('x',2):2, ('y',4):4, ('z',4):5})
+    # Mt = Mat(({2,4}, {'x','y','z'}), {(4,'x'):3, (2,'x'):2, (4,'y'):4, (4,'z'):5})
+    #print(M.transpose() == Mt)
+    # A = Mat(({'a','b'}, {'A','B'}), {('a','B'):2, ('b','A'):1})
+    # B = Mat(({'a','b'}, {'A','B'}), {('a','B'):2, ('b','A'):1, ('b','B'):0})
+    # C = Mat(({'a','b'}, {'A','B'}), {('a','B'):2, ('b','A'):1, ('b','B'):5})
+    # print(A == B)
+    
+    # print(B == A)
+    
+    # print(A == C)
+    
+    # print(C == A)
+    # print(A == Mat(({'a','b'}, {'A','B'}), {('a','B'):2, ('b','A'):1}))
+    A = Mat(({0,1,2}, {0,1,2}), {(1,1):4, (0,0):0, (1,2):1, (1,0):5, (0,1):3, (0,2):2})
+    B = Mat(({0,1,2}, {0,1,2}), {(1,0):5, (2,1):3, (1,1):2, (2,0):0, (0,0):1, (0,1):4})
+    #print(matrix_matrix_mul(A,B))
 
-#M = Mat(({'a'},{'a'}), {('a','a'):1})
-#print(M)
-#print(setitem(M,('a','a'),10))
-M = Mat(({0,1}, {0,1}), {(0,0):0,(0,1):3, (1,0):2, (1,1):4})
-#m_i = M.f.items()
-#M_f = filter(lambda x:x[0][0]==0, m_i)
-#print M_f
-#print M
-#print(M.transpose())
-#print(Mat(({0,1}, {0,1}), {(0,1):2, (1,0):3, (1,1):4}))
-#print((M.transpose()) == Mat(({0,1}, {0,1}), {(0,1):2, (1,0):3, (1,1):4}))
-#print M
-#print(transpose(M))
-# M = Mat(({'x','y','z'}, {2,4}), {('x',4):3, ('x',2):2, ('y',4):4, ('z',4):5})
-# Mt = Mat(({2,4}, {'x','y','z'}), {(4,'x'):3, (2,'x'):2, (4,'y'):4, (4,'z'):5})
-#print(M.transpose() == Mt)
-# A = Mat(({'a','b'}, {'A','B'}), {('a','B'):2, ('b','A'):1})
-# B = Mat(({'a','b'}, {'A','B'}), {('a','B'):2, ('b','A'):1, ('b','B'):0})
-# C = Mat(({'a','b'}, {'A','B'}), {('a','B'):2, ('b','A'):1, ('b','B'):5})
-# print(A == B)
-
-# print(B == A)
-
-# print(A == C)
-
-# print(C == A)
-# print(A == Mat(({'a','b'}, {'A','B'}), {('a','B'):2, ('b','A'):1}))
-# A = Mat(({0,1,2}, {0,1,2}), {(1,1):4, (0,0):0, (1,2):1, (1,0):5, (0,1):3, (0,2):2})
-# B = Mat(({0,1,2}, {0,1,2}), {(1,0):5, (2,1):3, (1,1):2, (2,0):0, (0,0):1, (0,1):4})
-# print A
-# A = Mat(({1,2,3}, {0,1,2}), {(1,1):4, (0,0):0, (1,2):1, (1,0):5, (0,1):3, (0,2):2})
-# B = Mat(({0,1,2}, {0,1,2}), {(1,0):5, (2,1):3, (1,1):2, (2,0):0, (0,0):1, (0,1):4})
-# print A
-# print(matrix_matrix_mul(A,B))
-
-    # def make_equations(x1, x2, w1, w2): 
-    #     '''
-    #     Input:
-    #         - x1 & x2: photo coordinates of a point on the board
-    #         - y1 & y2: whiteboard coordinates of a point on the board
-    #     Output:
-    #         - List [u,v] where u*h = 0 and v*h = 0
-    #     '''
-    #     domain = {(a, b) for a in {'y1', 'y2', 'y3'} for b in {'x1', 'x2', 'x3'}}
-    #     u = Vec(domain, {('y3','x1'):w1*x1,('y3','x2'):w1*x2,('y3','x3'):w1,('y1','x1'):-x1,('y1','x2'):-x2,('y1','x3'):-1})
-    #     v = Vec(domain, {('y3','x1'):w2*x1,('y3','x2'):w2*x2,('y3','x3'):w2,('y2','x1'):-x1,('y2','x2'):-x2,('y2','x3'):-1})
-    #     return [u, v]
+    def make_equations(x1, x2, w1, w2): 
+        '''
+        Input:
+            - x1 & x2: photo coordinates of a point on the board
+            - y1 & y2: whiteboard coordinates of a point on the board
+        Output:
+            - List [u,v] where u*h = 0 and v*h = 0
+        '''
+        domain = {(a, b) for a in {'y1', 'y2', 'y3'} for b in {'x1', 'x2', 'x3'}}
+        u = Vec(domain, {('y3','x1'):w1*x1,('y3','x2'):w1*x2,('y3','x3'):w1,('y1','x1'):-x1,('y1','x2'):-x2,('y1','x3'):-1})
+        v = Vec(domain, {('y3','x1'):w2*x1,('y3','x2'):w2*x2,('y3','x3'):w2,('y2','x1'):-x1,('y2','x2'):-x2,('y2','x3'):-1})
+        return [u, v]
 
 
     ## Task 3
@@ -403,3 +399,4 @@ M = Mat(({0,1}, {0,1}), {(0,0):0,(0,1):3, (1,0):2, (1,1):4})
     # h = solve(L,b)
     # dom = {'y1', 'y2', 'y3'},{'x1', 'x2', 'x3'}
     # H = Mat(dom,{(k):h[k] for k in h.D})
+    H = identity(3)
