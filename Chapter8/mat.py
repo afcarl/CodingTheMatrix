@@ -136,10 +136,11 @@ def transpose(M):
     M.transpose() == Mt
     True
     """
-    k = M.f.keys()
-    v = M.f.values()
+    k = list(M.f.keys())
+    v = list(M.f.values())
     
     keys = map(lambda x: (x[1],x[0]),k)
+
     M.f = dict(zip(keys,v))
     M.D = (M.D[1],M.D[0])
     return M
@@ -170,8 +171,8 @@ def vector_matrix_mul(v, M):
     """
     assert M.D[0] == v.D
     result = Vec(M.D[1],{})
-    v_i = v.f.items()
-    m_i = M.f.items()
+    v_i = list(v.f.items())
+    m_i = list(M.f.items())
     testDict = defaultdict(int)
     list_ = []
     for i in range(len(v_i)):
@@ -222,7 +223,19 @@ def matrix_vector_mul(M, v):
     """
     #print M.D[1], v.D
     assert M.D[1] == v.D
-    return vector_matrix_mul(v, M.transpose())
+    
+    l_ = list(M.f.items())
+    result_vec = {}
+    for i in list(M.D[0]):
+        extract_rows = [c for ((a,b),c) in l_ if a==i]
+        
+        val = sum(list(map(lambda x,y: x*y,extract_rows,list(v.f.values()))))
+        
+        result_vec[i] = val
+    
+    rv = Vec(M.D[0],result_vec)
+    return rv
+    #return v*M.transpose()
 
 def matrix_matrix_mul(A, B):
     """

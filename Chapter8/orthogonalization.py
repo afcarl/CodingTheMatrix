@@ -28,6 +28,7 @@ def project_orthogonal(b, vlist):
     Output: the projection of b orthogonal to the Vecs in vlist
     '''
     for v in vlist:
+        print(v)
         
         
         b = b - project_along(b, v)
